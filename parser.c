@@ -16,6 +16,24 @@ int	has_duplicates(t_stack *stack, int num)
 	return (0);
 }
 
+static int	process_sign_and_space(const char *str, int *i)
+{
+	int	sign;
+
+	sign = 1;
+	while (ft_isspace(str[*i]))
+		(*i)++;
+	if (str[*i] == '-' || str[*i] == '+')
+	{
+		if (str[*i] == '-')
+			sign = -1;
+		(*i)++;
+	}
+	if (!ft_isdigit(str[*i]))
+		return (0);
+	return (sign);
+}
+
 int	ft_atoi_with_overflow_check(const char *str, int *num)
 {
 	int		i;
@@ -23,22 +41,15 @@ int	ft_atoi_with_overflow_check(const char *str, int *num)
 	long	result;
 
 	i = 0;
-	sign = 1;
 	result = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	if (!ft_isdigit(str[i]))
+	sign = process_sign_and_space(str, &i);
+	if (sign == 0)
 		return (0);
 	while (ft_isdigit(str[i]))
 	{
 		result = result * 10 + (str[i] - '0');
-		if ((result > INT_MAX && sign == 1) || (result * sign < INT_MIN))
+		if ((sign > 0 && result > (long)INT_MAX) || 
+			(sign < 0 && result > (long)INT_MAX + 1))
 			return (0);
 		i++;
 	}
@@ -48,53 +59,65 @@ int	ft_atoi_with_overflow_check(const char *str, int *num)
 	return (1);
 }
 
-int	parse_single_arg(char *arg, t_stack **stack_a)
+static int	validate_single_arg(char *arg)
 {
-	int		i;
-	int		j;
-	char	**split;
-	int		num;
+	int	i;
 
-	split = NULL;
 	i = 0;
 	while (arg[i])
 	{
-		if (!ft_isdigit(arg[i]) && arg[i] != ' ' && arg[i] != '-' && arg[i] != '+')
+		if (!ft_isdigit(arg[i]) && arg[i] != ' ' && 
+			arg[i] != '-' && arg[i] != '+')
 			return (0);
 		i++;
 	}
-	split = (char **)malloc(sizeof(char *) * (strlen(arg) + 1));
-	if (!split)
-		return (0);
-	i = 0;
-	j = 0;
-	while (arg[i])
-	{
-		if (ft_isdigit(arg[i]) || arg[i] == '-' || arg[i] == '+')
-		{
-			split[j++] = &arg[i];
-			while (arg[i] && arg[i] != ' ')
-				i++;
-			if (arg[i])
-				arg[i++] = '\0';
-		}
-		else
-			i++;
-	}
-	split[j] = NULL;
+	return (1);
+}
+
+static void	free_split(char **split)
+{
+	int	i;
+
 	i = 0;
 	while (split[i])
 	{
-		if (!ft_atoi_with_overflow_check(split[i], &num) || has_duplicates(*stack_a, num))
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+static int	process_split_args(char **split, t_stack **stack_a)
+{
+	int	i;
+	int	num;
+
+	i = 0;
+	while (split[i])
+	{
+		if (!ft_atoi_with_overflow_check(split[i], &num) || 
+			has_duplicates(*stack_a, num))
 		{
-			free(split);
+			free_split(split);
 			return (0);
 		}
 		add_node_back(stack_a, create_new_node(num));
 		i++;
 	}
-	free(split);
+	free_split(split);
 	return (1);
+}
+
+static int	parse_single_arg(char *arg, t_stack **stack_a)
+{
+	char	**split;
+
+	if (!validate_single_arg(arg))
+		return (0);
+	split = ft_split(arg, ' ');
+	if (!split)
+		return (0);
+	return (process_split_args(split, stack_a));
 }
 
 int	parse_arguments(int argc, char **argv, t_stack **stack_a)

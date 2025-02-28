@@ -49,3 +49,53 @@ void	print_sorted_array(t_stack *stack)
 	}
 	ft_putstr_fd("]\n", 1);
 }
+
+// void    print_sorted_array(t_stack *stack)
+// {
+//     t_stack *temp;
+//     int     *array;
+//     int     size;
+//     int     i;
+
+//     size = get_stack_size(stack);
+//     array = (int *)malloc(sizeof(int) * size);
+//     if (!array)
+//         return;
+    
+//     // Copy values to array
+//     temp = stack;
+//     i = 0;
+//     while (temp)
+//     {
+//         array[i++] = temp->value;
+//         temp = temp->next;
+//     }
+    
+//     // Sort array (simple bubble sort for demonstration)
+//     for (int i = 0; i < size - 1; i++)
+//     {
+//         for (int j = 0; j < size - i - 1; j++)
+//         {
+//             if (array[j] > array[j + 1])
+//             {
+//                 int temp = array[j];
+//                 array[j] = array[j + 1];
+//                 array[j + 1] = temp;
+//             }
+//         }
+//     }
+    
+//     // Print sorted array
+//     ft_putstr_fd("Sorted array: [", 1);
+//     for (i = 0; i < size; i++)
+//     {
+//         char *num_str = ft_itoa(array[i]);
+//         ft_putstr_fd(num_str, 1);
+//         free(num_str);
+//         if (i < size - 1)
+//             ft_putstr_fd(", ", 1);
+//     }
+//     ft_putstr_fd("]\n", 1);
+    
+//     free(array);
+// }

@@ -5,7 +5,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <string.h>
-
+# include "libft/libft.h"
 typedef struct s_stack
 {
 	int				value;

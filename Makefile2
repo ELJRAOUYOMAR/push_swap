@@ -1,15 +1,7 @@
-# Program name
 NAME = push_swap
-
-# Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-# Directories
-LIBFT_DIR = libft
-INCLUDES = -I. -I$(LIBFT_DIR)
-
-# Source files
 SRCS = push_swap.c                        \
        operations/push.c                  \
        operations/swap.c                  \
@@ -22,33 +14,20 @@ SRCS = push_swap.c                        \
        chunks.c                           \
        print_array.c
 
-# Object files
 OBJS = $(SRCS:.c=.o)
 
-# Libft
-LIBFT = $(LIBFT_DIR)/libft.a
+all: $(NAME)
 
-# Rules
-all: $(LIBFT) $(NAME)
-
-# Compile libft
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
-
-# Compile push_swap
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-# Compile object files
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -f $(OBJS)
 
 fclean: clean
-	$(MAKE) -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 
 re: fclean all

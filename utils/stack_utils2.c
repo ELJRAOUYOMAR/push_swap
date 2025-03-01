@@ -47,7 +47,7 @@ int	is_stack_sorted(t_stack *stack)
 	return (1);
 }
 
-void	assign_index(t_stack **stack_a, int stack_size)
+void assign_index(t_stack **stack_a, int stack_size)
 {
 	t_stack	*current;
 	t_stack	*min;
@@ -62,7 +62,7 @@ void	assign_index(t_stack **stack_a, int stack_size)
 		min_val = INT_MAX;
 		while (current)
 		{
-			if (current->value < min_val && current->index == -1)
+			if (current->value <= min_val && current->index == -1)
 			{
 				min_val = current->value;
 				min = current;
@@ -74,33 +74,3 @@ void	assign_index(t_stack **stack_a, int stack_size)
 		i++;
 	}
 }
-
-// void    assign_index(t_stack **stack, int stack_size)
-// {
-//     t_stack *current;
-//     int     (min), i;
-
-//     i = 0;
-//     while (i < stack_size)
-//     {
-//         min = INT_MAX;
-//         current = *stack;
-//         while (current)
-//         {
-//             if (current->value < min && current->index == -1)
-//                 min = current->value;
-//             current = current->next;
-//         }
-//         current = *stack;
-//         while (current)
-//         {
-//             if (current->value == min && current->index == -1)
-//             {
-//                 current->index = i;
-//                 break;
-//             }
-//             current = current->next;
-//         }
-//         i++;
-//     }
-// }

@@ -36,8 +36,11 @@ t_stack	*get_stack_before_bottom(t_stack *stack);
 void	free_stack(t_stack **stack);
 int		is_stack_sorted(t_stack *stack);
 void	assign_index(t_stack **stack_a, int stack_size);
-void	print_sorted_array(t_stack *stack);
 
+//////////////////////////////////////////
+void	print_sorted_array(t_stack *stack);
+void print_stack(t_stack *stack);
+///////////////////////////////////////////
 /* Sorting algorithms */
 void	sort_stack(t_stack **stack_a, t_stack **stack_b);
 void	sort_three(t_stack **stack_a);

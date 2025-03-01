@@ -20,9 +20,9 @@ int	main(int argc, char **argv)
 	assign_index(&stack_a, stack_size);
 	if (!is_stack_sorted(stack_a))
 		sort_stack(&stack_a, &stack_b);
-	
 	// Print the sorted array
 	print_sorted_array(stack_a);
+	// print_stack(stack_a);
 	
 	free_stack(&stack_a);
 	free_stack(&stack_b);
@@ -56,64 +56,65 @@ void	sort_stack(t_stack **stack_a, t_stack **stack_b)
 	}
 }
 
-void	sort_three(t_stack **stack_a)
+void sort_three(t_stack **stack_a)
 {
-	int	top;
-	int	middle;
-	int	bottom;
-
-	top = (*stack_a)->index;
-	middle = (*stack_a)->next->index;
-	bottom = (*stack_a)->next->next->index;
-	if (top > middle && middle < bottom && top < bottom)
-		sa(stack_a, 1);
-	else if (top > middle && middle > bottom)
-	{
-		sa(stack_a, 1);
-		rra(stack_a, 1);
-	}
-	else if (top > middle && middle < bottom && top > bottom)
-		ra(stack_a, 1);
-	else if (top < middle && middle > bottom && top < bottom)
-	{
-		sa(stack_a, 1);
-		ra(stack_a, 1);
-	}
-	else if (top < middle && middle > bottom && top > bottom)
-		rra(stack_a, 1);
+    int top;
+    int middle;
+    int bottom;
+    
+    // Use index (which is assigned based on values) rather than comparing values directly
+    top = (*stack_a)->index;
+    middle = (*stack_a)->next->index;
+    bottom = (*stack_a)->next->next->index;
+    if (top > middle && middle < bottom && top < bottom)
+        sa(stack_a, 1);
+    else if (top > middle && middle > bottom)
+    {
+        sa(stack_a, 1);
+        rra(stack_a, 1);
+    }
+    else if (top > middle && middle < bottom && top > bottom)
+        ra(stack_a, 1);
+    else if (top < middle && middle > bottom && top < bottom)
+    {
+        sa(stack_a, 1);
+        ra(stack_a, 1);
+    }
+    else if (top < middle && middle > bottom && top > bottom)
+        rra(stack_a, 1);
 }
 
 void	sort_four(t_stack **stack_a, t_stack **stack_b)
 {
-	int	min_pos;
-	int	i;
+    t_stack *temp = *stack_a;
+    int	min_pos;
+    int	i;
 
-	min_pos = 0;
-	i = 0;
-	while (i < 4)
-	{
-		if ((*stack_a)->index == 0)
-		{
-			min_pos = i;
-			break ;
-		}
-		*stack_a = (*stack_a)->next;
-		i++;
-	}
-	while (i-- > 0)
-		*stack_a = get_stack_before_bottom(*stack_a);
-	if (min_pos == 1)
-		sa(stack_a, 1);
-	else if (min_pos == 2)
-	{
-		ra(stack_a, 1);
-		ra(stack_a, 1);
-	}
-	else if (min_pos == 3)
-		rra(stack_a, 1);
-	pb(stack_a, stack_b, 1);
-	sort_three(stack_a);
-	pa(stack_a, stack_b, 1);
+    min_pos = 0;
+    i = 0;
+    while (i < 4)
+    {
+        if (temp->index == 0)
+        {
+            min_pos = i;
+            break ;
+        }
+        temp = temp->next;
+        i++;
+    }
+    temp = *stack_a;
+    if (min_pos == 1)
+        sa(stack_a, 1);
+    else if (min_pos == 2)
+    {
+        ra(stack_a, 1);
+        ra(stack_a, 1);
+    }
+    else if (min_pos == 3)
+        rra(stack_a, 1);
+    pb(stack_a, stack_b, 1);
+    sort_three(stack_a);
+    pa(stack_a, stack_b, 1);
 }
 
 void	sort_five(t_stack **stack_a, t_stack **stack_b)

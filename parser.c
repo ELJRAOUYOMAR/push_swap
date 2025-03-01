@@ -16,6 +16,11 @@ int	has_duplicates(t_stack *stack, int num)
 	return (0);
 }
 
+/*
+	Helper function that handles spaces and signs (+ or -) at the beginning of a string
+	Skips spaces, processes a sign if present, and returns the sign multiplier (1 or -1)
+	Returns 0 if there's no digit after the sign, indicating an error
+*/
 static int	process_sign_and_space(const char *str, int *i)
 {
 	int	sign;
@@ -29,34 +34,34 @@ static int	process_sign_and_space(const char *str, int *i)
 			sign = -1;
 		(*i)++;
 	}
-	if (!ft_isdigit(str[*i]))
+	if (!ft_isdigit(str[*i]))	
 		return (0);
 	return (sign);
 }
 
-int	ft_atoi_with_overflow_check(const char *str, int *num)
+int ft_atoi_with_overflow_check(const char *str, int *num)
 {
-	int		i;
-	int		sign;
-	long	result;
+    int     i;
+    int     sign;
+    long    result;
 
-	i = 0;
-	result = 0;
-	sign = process_sign_and_space(str, &i);
-	if (sign == 0)
-		return (0);
-	while (ft_isdigit(str[i]))
-	{
-		result = result * 10 + (str[i] - '0');
-		if ((sign > 0 && result > (long)INT_MAX) || 
-			(sign < 0 && result > (long)INT_MAX + 1))
-			return (0);
-		i++;
-	}
-	if (str[i] != '\0')
-		return (0);
-	*num = (int)(result * sign);
-	return (1);
+    i = 0;
+    result = 0;
+    sign = process_sign_and_space(str, &i);
+    if (sign == 0)
+        return (0);
+    while (ft_isdigit(str[i]))
+    {
+        result = result * 10 + (str[i] - '0');
+        if ((sign > 0 && result > (long)INT_MAX) ||
+            (sign < 0 && result > (long)INT_MAX + 1))
+            return (0);
+        i++;
+    }
+    if (str[i] != '\0')
+        return (0);
+    *num = (int)(result * sign);
+    return (1);
 }
 
 static int	validate_single_arg(char *arg)
